@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    .container {
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 2s ease-in-out;
+      position: relative;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      animation: glow 2s ease-in-out infinite alternate;
+      color: #ff007f;
+    }
+    
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      margin-top: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    
+    .carousel-slide {
+      min-width: 100%;
+      transition: transform 0.5s ease;
+    }
+    
+    .carousel-slide img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+    
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    
+    .carousel-nav button {
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      pointer-events: all;
+    }
+    
+    .carousel-nav button:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    
+    .game {
+      margin-top: 3rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    
+    .game h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .game button {
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border: none;
+      font-size: 1rem;
+      color: white;
+      background: #ff007f;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    .game button:hover {
+      background: #ff4da6;
+    }
+
+    .game button#never {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .game button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    .effect-left,
+    .effect-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50px;
+      background: linear-gradient(to right, transparent, rgba(255, 0, 127, 0.5));
+      pointer-events: none;
+    }
+
+    .effect-left {
+      left: 0;
+    }
+
+    .effect-right {
+      right: 0;
+      background: linear-gradient(to left, transparent, rgba(255, 0, 127, 0.5));
+    }
+    
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f, 0 0 40px #ff007f;
+      }
+      to {
+        text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4, 0 0 40px #ff69b4, 0 0 50px #ff69b4;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dear Sayantika</h1>
+    <p>Two years have passed, but my feelings for you haven't changed. I hope these memories remind you of the bond we share.</p>
+    
+    <div class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-slide">
+          <img src="a....1.jpeg" alt="Memory 1">
+        </div>
+        <div class="carousel-slide">
+          <img src="shreya 1.jpeg" alt="Memory 2">
+        </div>
+        <div class="carousel-slide">
+          <img src="video  call.jpeg" alt="Memory 3">
+        </div>
+        <div class="carousel-slide">
+          <img src="s....1.jpeg" alt="Memory 4">
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <button id="prev">❮</button>
+        <button id="next">❯</button>
+      </div>
+    </div>
+    <div class="effect-left"></div>
+    <div class="effect-right"></div>
+
+    <div class="game">
+      <h2>When do you want to meet?</h2>
+      <button id="right-now">Right Now</button>
+      <button id="never">Never</button>
+    </div>
+  </div>
+
+  <audio id="background-music" loop autoplay>
+    <source src="Love status video Download__ Ek sinu or jhunu cute  love__ - AJ Akash Tech (youtube).mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const nextButton = document.getElementById('next');
+    const prevButton = document.getElementById('prev');
+    const rightNowButton = document.getElementById('right-now');
+    const neverButton = document.getElementById('never');
+    const music = document.getElementById('background-music');
+    
+    let currentIndex = 0;
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    nextButton.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateCarousel();
+    });
+
+    prevButton.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      updateCarousel();
+    });
+
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateCarousel();
+    }, 3000); // Auto-slide every 3 seconds
+
+    rightNowButton.addEventListener('click', () => {
+      alert("Great choice! Let's meet soon! ❤️");
+      rightNowButton.disabled = true;
+      neverButton.disabled = true;
+    });
+
+    neverButton.addEventListener('mouseover', () => {
+      const container = neverButton.parentElement;
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+
+      const newLeft = Math.random() * (containerWidth - neverButton.offsetWidth);
+      const newTop = Math.random() * (containerHeight - neverButton.offsetHeight);
+
+      neverButton.style.position = 'absolute';
+      neverButton.style.left = `${newLeft}px`;
+      neverButton.style.top = `${newTop}px`;
+    });
+  </script>
+</body>
+</html>
